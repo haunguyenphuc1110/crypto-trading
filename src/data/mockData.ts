@@ -1,8 +1,4 @@
-export interface DataItem {
-  price: string;
-  amount: string;
-  type: 'buy' | 'sell';
-}
+import { CandleData, DataItem } from '../types/Chart';
 
 export const mockOrderBook: DataItem[] = [
   { price: '253.11', amount: '0.001', type: 'buy' },
@@ -32,4 +28,105 @@ export const mockTrades: DataItem[] = [
   { price: '253.11', amount: '0.001', type: 'sell' },
   { price: '253.11', amount: '0.001', type: 'sell' },
   { price: '253.11', amount: '0.001', type: 'sell' },
+];
+
+export const mockCandlestickData: CandleData[] = [
+  {
+    timestamp: 1735689600000,
+    open: 20.48,
+    high: 21.25,
+    low: 20.15,
+    close: 21.0,
+  },
+  {
+    timestamp: 1735776000000,
+    open: 21.0,
+    high: 22.3,
+    low: 20.8,
+    close: 22.1,
+  },
+  {
+    timestamp: 1735862400000,
+    open: 22.1,
+    high: 22.5,
+    low: 21.5,
+    close: 21.85,
+  },
+  {
+    timestamp: 1735948800000,
+    open: 21.85,
+    high: 24.0,
+    low: 21.6,
+    close: 23.45,
+  },
+  {
+    timestamp: 1736035200000,
+    open: 23.45,
+    high: 24.8,
+    low: 23.2,
+    close: 24.2,
+  },
+  {
+    timestamp: 1736121600000,
+    open: 24.2,
+    high: 24.5,
+    low: 23.5,
+    close: 23.9,
+  },
+  {
+    timestamp: 1736208000000,
+    open: 23.9,
+    high: 25.5,
+    low: 23.8,
+    close: 25.15,
+  },
+  {
+    timestamp: 1736294400000,
+    open: 25.15,
+    high: 26.8,
+    low: 25.0,
+    close: 26.3,
+  },
+  {
+    timestamp: 1736380800000,
+    open: 26.3,
+    high: 26.5,
+    low: 25.5,
+    close: 25.85,
+  },
+  {
+    timestamp: 1736467200000,
+    open: 25.85,
+    high: 27.8,
+    low: 25.7,
+    close: 27.2,
+  },
+  {
+    timestamp: 1736553600000,
+    open: 27.2,
+    high: 27.5,
+    low: 26.5,
+    close: 26.95,
+  },
+  {
+    timestamp: 1736640000000,
+    open: 26.95,
+    high: 29.0,
+    low: 26.8,
+    close: 28.4,
+  },
+  {
+    timestamp: 1736726400000,
+    open: 28.4,
+    high: 29.5,
+    low: 28.2,
+    close: 29.15,
+  },
+  {
+    timestamp: 1736812800000,
+    open: 29.15,
+    high: 29.3,
+    low: 28.2,
+    close: 28.75,
+  },
 ];

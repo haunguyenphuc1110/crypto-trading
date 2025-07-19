@@ -1,65 +1,57 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { CartesianChart, Line } from 'victory-native';
+import { StyleSheet, View } from 'react-native';
+import { CandlestickChart as WagmiCandlestickChart } from 'react-native-wagmi-charts';
 import { Colors } from '../constants/colors';
-import TimeframeSelector from './TimeframeSelector';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../styles/dimensions';
+import { CandleData } from '../types/Chart';
 import ChartControls from './ChartControls';
-import { SCREEN_HEIGHT } from '../styles/dimensions';
-
-// Mock price data for line chart demonstration
-const mockPriceData = [
-  { day: 1, price: 20.48 },
-  { day: 2, price: 21.25 },
-  { day: 3, price: 22.1 },
-  { day: 4, price: 21.85 },
-  { day: 5, price: 23.45 },
-  { day: 6, price: 24.2 },
-  { day: 7, price: 23.9 },
-  { day: 8, price: 25.15 },
-  { day: 9, price: 26.3 },
-  { day: 10, price: 25.85 },
-  { day: 11, price: 27.2 },
-  { day: 12, price: 26.95 },
-  { day: 13, price: 28.4 },
-  { day: 14, price: 29.15 },
-  { day: 15, price: 28.75 },
-];
+import ChartGrid from './ChartGrid';
+import ChartYAxisLabels from './ChartYAxisLabels';
+import TimeframeSelector from './TimeframeSelector';
 
 interface CandlestickChartProps {
-  data?: Array<{
-    day: number;
-    price: number;
-  }>;
+  data: CandleData[];
   selectedTimeframe: string;
   setSelectedTimeframe: (timeframe: string) => void;
 }
 
 const CandlestickChart: React.FC<CandlestickChartProps> = ({
-  data = mockPriceData,
+  data,
   selectedTimeframe,
   setSelectedTimeframe,
 }) => {
+  const chartWidth = SCREEN_WIDTH * 0.6;
+  const chartHeight = SCREEN_HEIGHT / 3;
+
   return (
     <View style={styles.container}>
       <View style={styles.chartArea}>
-        <CartesianChart
-          data={data}
-          xKey="day"
-          yKeys={['price']}
-          axisOptions={{
-            lineColor: Colors.CHART_AXIS,
-            labelColor: Colors.CHART_AXIS,
-          }}
-        >
-          {({ points }) => (
-            <Line
-              points={points.price}
-              color={Colors.SUCCESS}
-              strokeWidth={2}
-              curveType="natural"
-            />
-          )}
-        </CartesianChart>
+        <View style={styles.chartWrapper}>
+          <ChartGrid width={chartWidth} height={chartHeight} />
+          <WagmiCandlestickChart.Provider data={data}>
+            <WagmiCandlestickChart height={chartHeight} width={chartWidth}>
+              <WagmiCandlestickChart.Candles
+                positiveColor={Colors.SUCCESS}
+                negativeColor={Colors.DANGER}
+              />
+              <WagmiCandlestickChart.Crosshair color={Colors.SUCCESS}>
+                <WagmiCandlestickChart.Tooltip
+                  style={{
+                    backgroundColor: Colors.TOOLTIP_COLOR,
+                    borderRadius: 20,
+                    paddingVertical: -20,
+                  }}
+                  textStyle={{
+                    color: Colors.PRIMARY_TEXT,
+                    fontSize: 10,
+                  }}
+                />
+              </WagmiCandlestickChart.Crosshair>
+            </WagmiCandlestickChart>
+          </WagmiCandlestickChart.Provider>
+        </View>
+
+        <ChartYAxisLabels data={data} height={chartHeight} />
       </View>
 
       <TimeframeSelector
@@ -80,6 +72,12 @@ const styles = StyleSheet.create({
   },
   chartArea: {
     height: SCREEN_HEIGHT / 3,
+    position: 'relative',
+    flexDirection: 'row',
+  },
+  chartWrapper: {
+    flex: 1,
+    position: 'relative',
   },
 });
 

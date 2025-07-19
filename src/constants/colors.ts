@@ -11,6 +11,7 @@ export const Colors = {
 
   ACTIVE_COLOR: '#0066FF',
   PERCENTAGE_COLOR: '#00FFD1',
+  TOOLTIP_COLOR: '#12DD00',
 
   CHART_AXIS: '#9CB8FF',
 };

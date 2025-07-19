@@ -1,12 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '../constants/colors';
-
-interface DataItem {
-  price: string;
-  amount: string;
-  type: 'buy' | 'sell';
-}
+import { DataItem } from '../types/Chart';
 
 interface DataListProps {
   title: string;
