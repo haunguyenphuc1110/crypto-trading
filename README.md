@@ -2,6 +2,16 @@
 
 A modern, real-time cryptocurrency trading application built with React Native. Features live market data, interactive charts, and a sleek dark theme optimized for both iOS and Android.
 
+### iOS Screenshot
+
+<img width="370" height="804" alt="Simulator Screenshot - iPhone 15 - 2025-07-19 at 13 28 32" src="https://github.com/user-attachments/assets/eea2564f-9d3c-4d78-8d81-55fc4a277f9e" />
+
+---
+
+### Android Screenshot
+
+<img width="370" height="804" alt="Screenshot_20250719_131654" src="https://github.com/user-attachments/assets/1ada5d57-ee97-4461-a1f3-7ed8e878ab79" />
+
 ## 🎥 Demo Videos
 
 ### Android Demo
@@ -152,13 +162,3 @@ src/
 - **DataList**: Displays order book and trades
 - **CurrencySelector**: Dropdown for pair selection
 - **PriceDisplay**: Live price with change indicators
-
-## 🔧 Development
-
-### Available Scripts
-
-- `npm start` - Start Metro bundler
-- `npm run android` - Run on Android
-- `npm run ios` - Run on iOS
-- `npm test` - Run tests
-- `npm run lint` - Run ESLint

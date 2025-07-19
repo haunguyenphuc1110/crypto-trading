@@ -10,19 +10,43 @@ const OrderHistory = () => (
       <View style={styles.orderStatus}>
         <Text style={styles.orderType}>Buy</Text>
         <Text style={styles.orderLabel}>Price</Text>
-        <Text style={styles.orderValueText}>0.0001230BTC</Text>
+        <Text
+          style={styles.orderValueText}
+          numberOfLines={1}
+          ellipsizeMode="middle"
+        >
+          0.0001230BTC
+        </Text>
       </View>
 
       <View style={styles.orderDetails}>
         <Text style={styles.orderPair}>BTC/ETH</Text>
         <Text style={styles.orderLabel}>Amount</Text>
-        <Text style={styles.orderValueText}>0.0001230ETH</Text>
+        <Text
+          style={styles.orderValueText}
+          numberOfLines={1}
+          ellipsizeMode="middle"
+        >
+          0.0001230ETH
+        </Text>
       </View>
 
       <View style={styles.orderAmounts}>
-        <Text style={styles.orderTimestamp}>Placed 2mins ago</Text>
+        <Text
+          style={styles.orderTimestamp}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          Placed 2mins ago
+        </Text>
         <Text style={styles.orderLabel}>Executed</Text>
-        <Text style={styles.orderValueText}>0.0000ETH</Text>
+        <Text
+          style={styles.orderValueText}
+          numberOfLines={1}
+          ellipsizeMode="middle"
+        >
+          0.0000ETH
+        </Text>
       </View>
     </View>
   </View>
@@ -51,6 +75,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   orderStatus: {
+    flex: 1,
+    flexShrink: 1,
     alignItems: 'flex-start',
   },
   orderType: {
@@ -59,6 +85,8 @@ const styles = StyleSheet.create({
   },
   orderDetails: {
     alignItems: 'flex-start',
+    flex: 1,
+    flexShrink: 1,
   },
   orderPair: {
     color: Colors.PRIMARY_TEXT,
@@ -70,6 +98,8 @@ const styles = StyleSheet.create({
   },
   orderAmounts: {
     alignItems: 'flex-end',
+    flex: 1,
+    flexShrink: 1,
   },
   orderLabel: {
     color: Colors.SECONDARY_TEXT,
