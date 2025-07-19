@@ -15,10 +15,10 @@ interface StatsCardsProps {
 
 const StatsCards: React.FC<StatsCardsProps> = ({
   data = {
-    high: '53,952.01',
-    low: '39,902.42',
-    volumeBTC: '53,952.01',
-    volumeETH: '39,902.42',
+    high: '0.00',
+    low: '0.00',
+    volumeBTC: '0.00',
+    volumeETH: '0.00',
   },
 }) => (
   <View style={styles.statsContainer}>

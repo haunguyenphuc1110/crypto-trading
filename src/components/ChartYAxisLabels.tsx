@@ -14,7 +14,7 @@ const ChartYAxisLabels: React.FC<ChartYAxisLabelsProps> = ({
   height,
   labelCount = 10,
 }) => {
-  const { minPrice, maxPrice, priceStep } = useMemo(() => {
+  const { minPrice, priceStep } = useMemo(() => {
     const allPrices = data.flatMap((item) => [
       item.open,
       item.high,
@@ -55,19 +55,15 @@ const ChartYAxisLabels: React.FC<ChartYAxisLabelsProps> = ({
 
 const styles = StyleSheet.create({
   yAxisContainer: {
-    width: 40,
+    width: 60,
     height: '100%',
-    paddingLeft: 8,
-    position: 'relative',
   },
   yAxisLabel: {
     color: Colors.SECONDARY_TEXT,
-    fontSize: 9, // Smaller font to fit more labels
-    fontWeight: '500',
-    textAlign: 'left',
+    fontSize: 10,
+    textAlign: 'right',
     position: 'absolute',
     left: 0,
-    lineHeight: 12, // Tight line height for better spacing
   },
 });
 

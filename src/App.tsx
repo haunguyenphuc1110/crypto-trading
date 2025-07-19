@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -20,81 +20,126 @@ import PriceDisplay from './components/PriceDisplay';
 import StatsCards from './components/StatsCards';
 
 import {
-  mockCandlestickData,
-  mockOrderBook,
-  mockTrades,
-} from './data/mockData';
+  generateUpdate,
+  getInitialData,
+  generateTimeframeData,
+} from './services/DataSimulator';
+import { MarketData } from './types/Chart';
+import {
+  convertToDataItems,
+  calculatePriceChange,
+  formatPrice,
+  formatStatsData,
+} from './utils';
+import { PortalProvider } from '@gorhom/portal';
 
 function App() {
   const [selectedTab, setSelectedTab] = useState('Open');
   const [selectedTimeframe, setSelectedTimeframe] = useState('7D');
+  const [marketData, setMarketData] = useState<MarketData | null>(null);
+  const [previousPrice, setPreviousPrice] = useState<number>(0);
 
-  return (
-    <GestureHandlerRootView style={styles.container}>
+  // Initialize and start updates
+  useEffect(() => {
+    // Get initial data
+    const initialData = getInitialData(selectedTimeframe);
+    setMarketData(initialData);
+    setPreviousPrice(initialData.currentPrice);
+
+    // Update every 5 seconds
+    const interval = setInterval(() => {
+      setMarketData((prevData) => {
+        const newData = generateUpdate();
+        if (prevData) {
+          setPreviousPrice(prevData.currentPrice);
+        }
+        return newData;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []); // Only run once on mount
+
+  // Handle timeframe changes
+  useEffect(() => {
+    if (marketData) {
+      // Only run if we already have data (not on initial mount)
+      const newData = generateTimeframeData(selectedTimeframe);
+      setMarketData(newData);
+      setPreviousPrice(newData.currentPrice);
+    }
+  }, [selectedTimeframe]); // Run when timeframe changes
+
+  if (!marketData) {
+    return (
       <SafeAreaView style={styles.container}>
         <StatusBar
           barStyle="light-content"
           backgroundColor={Colors.PRIMARY_BACKGROUND}
         />
-        <Header />
-
-        <ScrollView
-          style={styles.content}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 50 }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginHorizontal: 20,
-            }}
-          >
-            <StatsCards />
-            <View
-              style={{
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
-              }}
-            >
-              <PriceDisplay />
-              <CurrencySelector />
-            </View>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              marginTop: 30,
-              marginRight: 20,
-            }}
-          >
-            <View style={{ flex: 1, marginRight: 10 }}>
-              <CandlestickChart
-                data={mockCandlestickData}
-                selectedTimeframe={selectedTimeframe}
-                setSelectedTimeframe={setSelectedTimeframe}
-              />
-
-              <BottomTabs
-                selectedTab={selectedTab}
-                onTabChange={setSelectedTab}
-              />
-              <OrderHistory />
-            </View>
-
-            <View>
-              <DataList title="Order book" data={mockOrderBook} />
-              <DataList
-                title="Trades"
-                data={mockTrades}
-                containerStyle={{ marginTop: 20 }}
-              />
-            </View>
-          </View>
-        </ScrollView>
       </SafeAreaView>
+    );
+  }
+
+  return (
+    <GestureHandlerRootView style={styles.container}>
+      <PortalProvider>
+        <SafeAreaView style={styles.container}>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor={Colors.PRIMARY_BACKGROUND}
+          />
+          <Header />
+
+          <ScrollView
+            style={styles.content}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 50 }}
+          >
+            <View style={styles.statsContainer}>
+              <StatsCards data={formatStatsData(marketData)} />
+              <View style={styles.priceContainer}>
+                <PriceDisplay
+                  price={formatPrice(marketData.currentPrice)}
+                  change={calculatePriceChange(
+                    marketData.currentPrice,
+                    previousPrice
+                  )}
+                />
+                <CurrencySelector />
+              </View>
+            </View>
+
+            <View style={styles.chartContainer}>
+              <View style={styles.chartContent}>
+                <CandlestickChart
+                  data={marketData.candles}
+                  selectedTimeframe={selectedTimeframe}
+                  setSelectedTimeframe={setSelectedTimeframe}
+                />
+
+                <BottomTabs
+                  selectedTab={selectedTab}
+                  onTabChange={setSelectedTab}
+                />
+                <OrderHistory />
+              </View>
+
+              <View>
+                <DataList
+                  title="Order book"
+                  data={convertToDataItems(marketData, 'orderbook')}
+                />
+                <DataList
+                  title="Trades"
+                  data={convertToDataItems(marketData, 'trades')}
+                  containerStyle={{ marginTop: 20 }}
+                />
+              </View>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </PortalProvider>
     </GestureHandlerRootView>
   );
 }
@@ -107,6 +152,25 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingTop: 20,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+  },
+  chartContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 30,
+    marginRight: 20,
+  },
+  priceContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  chartContent: {
+    flex: 1,
+    marginRight: 10,
   },
 });
 

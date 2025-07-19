@@ -8,8 +8,8 @@ interface PriceDisplayProps {
 }
 
 const PriceDisplay: React.FC<PriceDisplayProps> = ({
-  price = '$66,360.55',
-  change = '(+1.25%)',
+  price = '0.00',
+  change = '(+0.00%)',
 }) => (
   <View style={styles.priceContainer}>
     <Text style={styles.mainPrice}>{price}</Text>

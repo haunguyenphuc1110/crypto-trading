@@ -14,4 +14,5 @@ export const Colors = {
   TOOLTIP_COLOR: '#12DD00',
 
   CHART_AXIS: '#9CB8FF',
+  OVERLAY_COLOR: 'rgba(0, 0, 0, 0.2)',
 };

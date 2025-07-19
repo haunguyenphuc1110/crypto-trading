@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { CandlestickChart as WagmiCandlestickChart } from 'react-native-wagmi-charts';
 import { Colors } from '../constants/colors';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../styles/dimensions';
@@ -20,7 +20,8 @@ const CandlestickChart: React.FC<CandlestickChartProps> = ({
   selectedTimeframe,
   setSelectedTimeframe,
 }) => {
-  const chartWidth = SCREEN_WIDTH * 0.6;
+  const chartWidth =
+    Platform.OS === 'ios' ? SCREEN_WIDTH * 0.45 : SCREEN_WIDTH * 0.55;
   const chartHeight = SCREEN_HEIGHT / 3;
 
   return (
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     padding: 10,
+    paddingRight: 0,
   },
   chartArea: {
     height: SCREEN_HEIGHT / 3,
